@@ -21,29 +21,21 @@
         };
 
         function addBirthday(birthday) {
-            var deferred = $q.defer();
-            deferred.resolve(_db.post(birthday));
-            return deferred.promise;
+            return $q.when(_db.post(birthday));
         };
 
         function updateBirthday(birthday) {
-            var deferred = $q.defer();
-            deferred.resolve(_db.put(birthday));
-            return deferred.promise;
+            return $q.when(_db.put(birthday));
         };
 
         function deleteBirthday(birthday) {
-            var deferred = $q.defer();
-            deferred.resolve(_db.remove(birthday));
-            return deferred.promise;
+            return $q.when(_db.remove(birthday));
         };
 
         function getAllBirthdays() {
 
-            var deferred = $q.defer();
-
             if (!_birthdays) {
-                deferred.resolve(_db.allDocs({ include_docs: true})
+                return $q.when(_db.allDocs({ include_docs: true}))
                           .then(function(docs) {
 
                             // Each row has a .doc object and we just want to send an 
@@ -60,13 +52,11 @@
                                .on('change', onDatabaseChange);
 
                            return _birthdays;
-                         }));
+                         });
             } else {
                 // Return cached data as a promise
-                deferred.resolve(_birthdays);
+                return $q.when(_birthdays);
             }
-
-           return deferred.promise;
         };
 
         function onDatabaseChange(change) {
