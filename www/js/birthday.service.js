@@ -17,7 +17,7 @@
 
         function initDB() {
             // Creates the database or opens if it already exists
-            _db = new PouchDB('birthdays');
+            _db = new PouchDB('birthdays', {adapter: 'websql'});
         };
 
         function addBirthday(birthday) {
